@@ -222,11 +222,26 @@ class DoublyLinkedList<AnyType> {
     }
 
     /**
+     * An extra loop was added to this method. After every iteration,
+     * the data value was appended to the original string.
      * Returns a String representation of this collection.
      */
     public String toString() {
 
-        StringBuilder sb = new StringBuilder("Tail to front" + "[ ");
+
+
+        StringBuilder sb = new StringBuilder("Front to tail : " + "[ ");
+
+
+        Node<AnyType> walkerFront = head.next;
+        while (walkerFront != tail) {
+            sb.append(walkerFront.data).append(" ");
+            walkerFront = walkerFront.next;
+        }
+        sb.append("]");
+
+
+        sb.append(" Tail to front : " + " [");
         Node<AnyType> walker = tail.prev; // start at first data node
         while (walker != head) {
             sb.append(walker.data).append(" ");
@@ -234,22 +249,9 @@ class DoublyLinkedList<AnyType> {
         }
         sb.append("]");
 
-        sb.append(" Front to tail" + " [");
-        Node<AnyType> walkerFront = head.next;
-        while (walkerFront != tail) {
-            sb.append(walkerFront.data).append(" ");
-            walkerFront = walkerFront.next;
-        }
-            sb.append("]");
 
+        // new loop that traverses from end to beginning
 
-//        sb.append("[");
-//        Node<AnyType> walkerBack = tail.prev; // start at last data node
-//        while (walker != head) {
-//            while (walker != head) {
-//            walker = walkerBack.prev;
-//        }
-//        sb.append("]");
 
         return new String(sb);
     }
@@ -264,7 +266,7 @@ class DoublyLinkedList<AnyType> {
      */
     public void addFirst(AnyType el) {
         Node<AnyType> newNode = new Node<>(el, head, head.next );
-        head.next.next.prev = newNode;
+        head.next.prev = newNode;
         head.next = newNode;
         theSize++;
     }
@@ -275,9 +277,10 @@ class DoublyLinkedList<AnyType> {
      */
     public void addLast(AnyType el){
         Node<AnyType> newNode = new Node<>(el, tail.prev, tail);
-        tail.prev.next = newNode;
+        tail.prev.prev.next = newNode;
         tail.prev = newNode;
-        theSize--;
+
+        theSize++;
     }
 
 
@@ -288,6 +291,7 @@ class DoublyLinkedList<AnyType> {
     public void removeFirst(){
         head.next = head.next.next;
         head.next.prev = head;
+        theSize--;
     }
 
 
@@ -297,7 +301,7 @@ class DoublyLinkedList<AnyType> {
     public void removeLast() {
         tail.prev = tail.prev.prev;
         tail.prev.next = tail;
-
+        theSize--;
     }
 
     /**
@@ -325,31 +329,34 @@ class DoublyLinkedList<AnyType> {
 
         for (int i = 0; i < 10; i++)
             lst.add(i);
-        System.out.println("After adding 0 through 9");
+        System.out.println("\nAfter adding 0 through 9");
         System.out.println(lst);
-        for (int i = 10; i <= 100; i+= 10)
+        for (int i = 0; i < 100; i+= 10)
             lst.add(0, i);
-        System.out.println("After adding 20 through 29, each at position 0");
+        System.out.println("\nAfter adding 0 through 100, each at position 0");
         System.out.println(lst);
 
         lst.remove(0);
         lst.remove(lst.size() - 1);
-        System.out.println("After removing the first and the last elements");
+        System.out.println("\nAfter removing the first and the last elements");
         System.out.println(lst);
-        lst.addFirst(100);
+
+
+
+        lst.addFirst(90);
         lst.addLast(9);
 
 
-        System.out.println("AFTER METHODS!!!");
+        System.out.println("\nAFTER METHODS!!!");
         System.out.println(lst);
 
 
         lst.removeLast();
         lst.removeFirst();
-        System.out.println("SECOND ROUND: 100 AND 50 SHOULD BE GONE");
+        System.out.println("\nSECOND ROUND: 90 AND 9 SHOULD BE GONE");
         System.out.println(lst);
-        System.out.println("return first element " + lst.getFirst());
-        System.out.println("return last element " + lst.getLast());
+        System.out.println("\nreturn first element " + lst.getFirst());
+        System.out.println("\nreturn last element " + lst.getLast());
 
 
 
