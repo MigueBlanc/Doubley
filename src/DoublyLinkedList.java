@@ -187,7 +187,7 @@ class DoublyLinkedList<AnyType> {
         if (idx < lower || idx > upper)
             throw new IndexOutOfBoundsException("getNode index: " + idx + "; size: " + size());
 
-        if (idx < size() / 2) {
+        if (idx < size() / 2) {   /// DECISION STRUCTURES USED TO KNOW IF INDEX IS CLOSER TO TAIL OR HEAD.
             p = head.next;
             for (int i = 0; i < idx; i++)
                 p = p.next;
@@ -277,7 +277,7 @@ class DoublyLinkedList<AnyType> {
      */
     public void addLast(AnyType el){
         Node<AnyType> newNode = new Node<>(el, tail.prev, tail);
-        tail.prev.prev.next = newNode;
+        tail.prev.next = newNode;
         tail.prev = newNode;
 
         theSize++;
@@ -321,6 +321,34 @@ class DoublyLinkedList<AnyType> {
         return tail.prev.data;
     }
 
+    public boolean contains(AnyType el){
+        Node<AnyType> walker = head.next;
+        while(walker.next != null){
+            if (walker.data == el)
+                return true;
+            else {
+                walker = walker.next;
+            }
+        }
+        return false;
+    }
+
+
+
+    public DoublyLinkedList<AnyType> reverse(DoublyLinkedList<AnyType> lst){
+        DoublyLinkedList<AnyType> myReversedList = new DoublyLinkedList<>();
+
+
+
+
+
+
+
+
+        return myReversedList;
+    }
+
+
 
 
     // main method to test DoublyLinkedList
@@ -357,6 +385,7 @@ class DoublyLinkedList<AnyType> {
         System.out.println(lst);
         System.out.println("\nreturn first element " + lst.getFirst());
         System.out.println("\nreturn last element " + lst.getLast());
+        System.out.println("contains "  + lst.contains(100));
 
 
 
