@@ -4,7 +4,7 @@ class midterm{
 
     public static  void main(String[] Args ){
 
-        for(int i = 1; i <= 15; i++){
+        for(int i = 1; i <= 10; i++){
             System.out.printf("\n value of x when n == %d is ", i);
             System.out.println("x = " + Q(i));
         }
