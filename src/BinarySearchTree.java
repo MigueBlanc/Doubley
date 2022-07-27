@@ -1,3 +1,9 @@
+/**
+ *  AUTHOR: MICHAEL BLANCO
+ *  Statement of Authenticity: All extra methods added are product of my own work.\
+ *  date : 07/27/2022
+ */
+
 // BinarySearchTree class
 //
 // CONSTRUCTION: with no initializer
@@ -25,6 +31,48 @@ import java.util.Queue;
  */
 public class BinarySearchTree<AnyType extends Comparable<? super AnyType>> {
 
+
+
+
+    //PROGRAM TESTING
+    /**             visual tree
+     *                      100
+     *                      / \
+     *                   40    150
+     *                  /  \     \
+     *                 30  50    160
+     *                      \       \
+     *                       70      200
+     *                         \
+     *                          90
+     */
+    public static void main(String[] args) {
+        int[] myArr = {100, 40,30, 50, 150,  70, 160, 200, 90};
+        BinarySearchTree<Integer> t = new BinarySearchTree<>();
+        for (int j : myArr) {
+            t.insert(j);
+        }
+        System.out.println("In-order printing of tree: ");
+        t.printTree();
+
+
+        System.out.println("Nodes with only one child: (should be 4) =  " + t.nodesWithOneChild());
+
+
+        System.out.println("Printing tree in level-order : ");
+        t.printLevelOrder();
+
+
+
+
+    }
+
+
+
+
+
+
+
     public int nodesWithOneChild() {
 
         return nodesWithOneChild(root);
@@ -47,20 +95,6 @@ public class BinarySearchTree<AnyType extends Comparable<? super AnyType>> {
     }
 
 
-    // Test program
-    public static void main(String[] args) {
-        int[] myArr = {100, 40,30, 50, 150,  70, 160, 200, 90};
-        BinarySearchTree<Integer> t = new BinarySearchTree<>();
-        for (int j : myArr) {
-            t.insert(j);
-        }
-        t.printTree();
-
-
-        System.out.println(t.nodesWithOneChild());
-
-
-    }
 
     // Basic node stored in unbalanced binary search trees
     private static class BinaryNode<AnyType> {
@@ -196,19 +230,32 @@ public class BinarySearchTree<AnyType extends Comparable<? super AnyType>> {
     }
 
     private void printLevelOrder() {
-        DoublyLinkedList<BinaryNode>
-        binaryNodes.add(root);
-        BinaryNode pointer = binaryNodes.get
-        while(!binaryNodes.isEmpty()){
+        DoublyLinkedList<BinaryNode> myQueue = new DoublyLinkedList<>();
+        myQueue.addFirst(root);
 
 
+        while(!myQueue.isEmpty()){
 
+            @SuppressWarnings("rawtypes") BinaryNode pointer = myQueue.getLast();
 
+            // dequeing node:
+            myQueue.removeLast();
+            System.out.println(pointer.element);
+            // case 1: node's left child is not null, enqueue it.
+            if(pointer.left != null){
+                myQueue.addFirst(pointer.left);
+            }
 
+            //case 2: node's right child is non-empty, enqueue  it.
+
+            if(pointer.right != null){
+                myQueue.addFirst(pointer.right);
+            }
         }
 
 
     }
+
 
 
 
