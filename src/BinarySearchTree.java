@@ -14,6 +14,9 @@
 // ******************ERRORS********************************
 // Throws UnderflowException as appropriate
 
+import java.util.ArrayDeque;
+import java.util.Queue;
+
 /**
  * Implements an unbalanced binary search tree.
  * Note that all "matching" is based on the compareTo method.
@@ -21,6 +24,43 @@
  * @author Mark Allen Weiss
  */
 public class BinarySearchTree<AnyType extends Comparable<? super AnyType>> {
+
+    public int nodesWithOneChild() {
+
+        return nodesWithOneChild(root);
+    }
+
+
+    private int nodesWithOneChild(BinaryNode<AnyType> e1) {
+        int acc;
+
+        if (e1 == null) {
+            return 0;
+        } else if (e1.left == null && e1.right != null) {
+            acc = nodesWithOneChild(e1.right) + 1;
+        } else if (e1.left != null && e1.right == null) {
+            acc = nodesWithOneChild(e1.left);
+        } else {
+            acc = nodesWithOneChild(e1.left) + nodesWithOneChild(e1.right);
+        }
+        return acc;
+    }
+
+
+    // Test program
+    public static void main(String[] args) {
+        int[] myArr = {100, 40,30, 50, 150,  70, 160, 200, 90};
+        BinarySearchTree<Integer> t = new BinarySearchTree<>();
+        for (int j : myArr) {
+            t.insert(j);
+        }
+        t.printTree();
+
+
+        System.out.println(t.nodesWithOneChild());
+
+
+    }
 
     // Basic node stored in unbalanced binary search trees
     private static class BinaryNode<AnyType> {
@@ -90,6 +130,7 @@ public class BinarySearchTree<AnyType extends Comparable<? super AnyType>> {
      * @return the largest item of null if empty.
      */
     public AnyType findMax() {
+
         if (isEmpty())
             return null;
         // throw new UnderflowException();
@@ -153,6 +194,23 @@ public class BinarySearchTree<AnyType extends Comparable<? super AnyType>> {
             ;  // Duplicate; do nothing
         return t;
     }
+
+    private void printLevelOrder() {
+        DoublyLinkedList<BinaryNode>
+        binaryNodes.add(root);
+        BinaryNode pointer = binaryNodes.get
+        while(!binaryNodes.isEmpty()){
+
+
+
+
+
+        }
+
+
+    }
+
+
 
     /**
      * Internal method to remove from a subtree.
@@ -255,9 +313,6 @@ public class BinarySearchTree<AnyType extends Comparable<? super AnyType>> {
     }
 
 
-    // Test program
-    public static void main(String[] args) {
-        BinarySearchTree<Integer> t = new BinarySearchTree<>();
-
-    }
 }
+
+
