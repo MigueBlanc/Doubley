@@ -20,9 +20,6 @@
 // ******************ERRORS********************************
 // Throws UnderflowException as appropriate
 
-import java.util.ArrayDeque;
-import java.util.Queue;
-
 /**
  * Implements an unbalanced binary search tree.
  * Note that all "matching" is based on the compareTo method.
@@ -47,10 +44,10 @@ public class BinarySearchTree<AnyType extends Comparable<? super AnyType>> {
      *                          90
      */
     public static void main(String[] args) {
-        int[] myArr = {100, 40,30, 50, 150,  70, 160, 200, 90};
+        int[] myArr = {100, 40,30, 50, 150,  70, 160, 200, 90,60,65,63};
         BinarySearchTree<Integer> t = new BinarySearchTree<>();
-        for (int j : myArr) {
-            t.insert(j);
+        for(int i = 0; i < myArr.length; i++){
+            t.insert(myArr[i]);
         }
         System.out.println("In-order printing of tree: ");
         t.printTree();
@@ -62,23 +59,49 @@ public class BinarySearchTree<AnyType extends Comparable<? super AnyType>> {
         System.out.println("Printing tree in level-order : ");
         t.printLevelOrder();
 
+        System.out.println("Height of tree is " + t.height());
+        System.out.println(t.printInOrder());
 
+
+    }
+
+    public String printInOrder(){
+       printInorder(root);
+
+        return "end";
+    }
+
+    private void printInorder(BinaryNode<AnyType> t1){
+        if(t1 == null){
+            return;
+
+        }
+        /* first recur on left child */
+        printInorder(t1.left);
+        /* then print the data of node */
+        System.out.print(t1.element + " ");
+        /* now recur on right child */
+        printInorder(t1.right);
 
 
     }
 
 
 
-
-
-
-
+    /**
+     * this public method calls the private method
+     * @return int
+     */
     public int nodesWithOneChild() {
 
         return nodesWithOneChild(root);
     }
 
-
+    /**
+     *
+     * @param e1
+     * @return
+     */
     private int nodesWithOneChild(BinaryNode<AnyType> e1) {
         int acc;
 
@@ -88,10 +111,44 @@ public class BinarySearchTree<AnyType extends Comparable<? super AnyType>> {
             acc = nodesWithOneChild(e1.right) + 1;
         } else if (e1.left != null && e1.right == null) {
             acc = nodesWithOneChild(e1.left);
-        } else {
+        } /*else if (e1.left == null && e1.right == null){
+            acc =+ 0;
+            }*/
+        else {
             acc = nodesWithOneChild(e1.left) + nodesWithOneChild(e1.right);
         }
         return acc;
+    }
+
+    /**
+     * this method prints the tree in level-order
+     *
+     */
+    private void printLevelOrder() {
+        DoublyLinkedList<BinaryNode> myQueue = new DoublyLinkedList<>();
+        myQueue.addFirst(root);
+
+
+        while(!myQueue.isEmpty()){
+
+            @SuppressWarnings("rawtypes") BinaryNode pointer = myQueue.getLast();
+
+            // dequeue node:
+            myQueue.removeLast();
+            System.out.println(pointer.element);
+            // case 1: node's left child is not null, enqueue it.
+            if(pointer.left != null){
+                myQueue.addFirst(pointer.left);
+            }
+
+            //case 2: node's right child is non-empty, enqueue  it.
+
+            if(pointer.right != null){
+                myQueue.addFirst(pointer.right);
+            }
+        }
+
+
     }
 
 
@@ -134,7 +191,7 @@ public class BinarySearchTree<AnyType extends Comparable<? super AnyType>> {
      * @param x the item to insert.
      */
     public void insert(AnyType x) {
-        root = insert(x, root);
+        root = insertRec(x, root);
     }
 
     /**
@@ -214,47 +271,25 @@ public class BinarySearchTree<AnyType extends Comparable<? super AnyType>> {
      * @param t the node that roots the subtree.
      * @return the new root of the subtree.
      */
-    private BinaryNode<AnyType> insert(AnyType x, BinaryNode<AnyType> t) {
-        if (t == null)
+    private BinaryNode<AnyType> insertRec(AnyType x, BinaryNode<AnyType> t) {
+       if (t == null) {
             return new BinaryNode<>(x, null, null);
 
+        }
         int compareResult = x.compareTo(t.element);
 
         if (compareResult < 0)
-            t.left = insert(x, t.left);
-        else if (compareResult > 0)
-            t.right = insert(x, t.right);
-        else
-            ;  // Duplicate; do nothing
+            t.left = insertRec(x, t.left);
+        if (compareResult > 0)
+            t.right = insertRec(x, t.right);
+            // Duplicate; do nothing
+        else if (compareResult == 0 )
+            System.out.println("I HAPPENED DUDE");
+
+
         return t;
     }
 
-    private void printLevelOrder() {
-        DoublyLinkedList<BinaryNode> myQueue = new DoublyLinkedList<>();
-        myQueue.addFirst(root);
-
-
-        while(!myQueue.isEmpty()){
-
-            @SuppressWarnings("rawtypes") BinaryNode pointer = myQueue.getLast();
-
-            // dequeing node:
-            myQueue.removeLast();
-            System.out.println(pointer.element);
-            // case 1: node's left child is not null, enqueue it.
-            if(pointer.left != null){
-                myQueue.addFirst(pointer.left);
-            }
-
-            //case 2: node's right child is non-empty, enqueue  it.
-
-            if(pointer.right != null){
-                myQueue.addFirst(pointer.right);
-            }
-        }
-
-
-    }
 
 
 
@@ -346,18 +381,38 @@ public class BinarySearchTree<AnyType extends Comparable<? super AnyType>> {
             printTree(t.right);
         }
     }
+public int height(){
+        return height(root);
+}
+private int height(BinaryNode<AnyType> e1){
+
+
+        int leftHeight;
+        int rightHeight;
+            if(e1 == null)
+                return 0;
+
+                else
+                {
+                    leftHeight = height(e1.left);
+                    rightHeight = height(e1.right);
+                }
+
+
+            return Math.max(leftHeight, rightHeight);
+}
 
     /**
      * Internal method to compute height of a subtree.
      *
      * @param t the node that roots the subtree.
      */
-    private int height(BinaryNode<AnyType> t) {
-        if (t == null)
-            return -1;
-        else
-            return 1 + Math.max(height(t.left), height(t.right));
-    }
+    //private int height(BinaryNode<AnyType> t) {
+        //if (t == null)
+           // return -1;
+        //else
+           // return 1 + Math.max(height(t.left), height(t.right));
+   // }
 
 
 }
