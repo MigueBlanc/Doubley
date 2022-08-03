@@ -44,7 +44,7 @@ public class BinarySearchTree<AnyType extends Comparable<? super AnyType>> {
      *                          90
      */
     public static void main(String[] args) {
-        int[] myArr = {100, 40,30, 50, 150,  70, 160, 200, 90,60,65,63};
+        int[] myArr = {100, 40,30, 50, 150,70, 160, 200, 90,60,65,63};
         BinarySearchTree<Integer> t = new BinarySearchTree<>();
         for(int i = 0; i < myArr.length; i++){
             t.insert(myArr[i]);
@@ -384,23 +384,25 @@ public class BinarySearchTree<AnyType extends Comparable<? super AnyType>> {
 public int height(){
         return height(root);
 }
-private int height(BinaryNode<AnyType> e1){
 
 
-        int leftHeight;
-        int rightHeight;
-            if(e1 == null)
-                return 0;
 
-                else
-                {
-                    leftHeight = height(e1.left);
-                    rightHeight = height(e1.right);
-                }
+private int height(BinaryNode<AnyType> e1) {
 
 
-            return Math.max(leftHeight, rightHeight);
+    int leftHeight = 0;
+    int rightHeight = 0;
+
+    if (e1.left != null) {
+        leftHeight = height(e1.left);
+    }
+    if (e1.right != null) {
+        rightHeight = height(e1.right);
+    }
+
+    return Math.max(leftHeight, rightHeight) + 1;
 }
+
 
     /**
      * Internal method to compute height of a subtree.
